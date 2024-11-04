@@ -69,7 +69,7 @@ func (p *Parser) parseValue(token Token) error {
 		p.currentNode = newNode
 	case TokenRightBrace:
 		if len(p.stack) == 0 {
-			return fmt.Errorf("unexpected token: %v at %d", token.Value, token.Pos)
+			return fmt.Errorf("unexpected token: %v at position: %d", token.Value, token.Pos)
 		}
 		// End of the current JSON object
 		// Set current Node to the last Node in the stack (parent Node)
@@ -88,7 +88,7 @@ func (p *Parser) parseValue(token Token) error {
 		p.currentNode = newNode
 	case TokenRightBracket:
 		if len(p.stack) == 0 {
-			return fmt.Errorf("unexpected token: %v at %d", token.Value, token.Pos)
+			return fmt.Errorf("unexpected token: %v at position: %d", token.Value, token.Pos)
 		}
 		// End of the current JSON array
 		// Set current Node to the last Node in the stack (parent Node)
@@ -116,7 +116,7 @@ func (p *Parser) parseValue(token Token) error {
 	case TokenEOF:
 		return fmt.Errorf("Not a valid JSON input")
 	default:
-		return fmt.Errorf("unexpected token: %v at %d", token.Value, token.Pos)
+		return fmt.Errorf("unexpected token: %v at position: %d", token.Value, token.Pos)
 	}
 
 	return nil

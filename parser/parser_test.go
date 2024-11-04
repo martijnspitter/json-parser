@@ -28,7 +28,7 @@ func TestParser(t *testing.T) {
 		},
 		{
 			input:    `{"key": "value", key2: "value2"}`,
-			expected: fmt.Errorf("unexpected end of input"),
+			expected: fmt.Errorf("unexpected token: k at position: 17"),
 		},
 		{
 			input:    `{"key": true, "key2": false, "key3": null, "key4": 123}`,
@@ -36,7 +36,7 @@ func TestParser(t *testing.T) {
 		},
 		{
 			input:    `{"key": true, "key2": False, "key3": null, "key4": 123}`,
-			expected: fmt.Errorf("unexpected end of input"),
+			expected: fmt.Errorf("unexpected token: F at position: 22"),
 		},
 	}
 

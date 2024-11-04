@@ -21,6 +21,7 @@ const (
 	TokenNumber       = "TokenNumber"
 	TokenBool         = "TokenBool"
 	TokenNull         = "TokenNull"
+	TokenError        = "TokenError"
 )
 
 type Token struct {
@@ -109,7 +110,7 @@ func (t *Tokenizer) NextToken() Token {
 				continue
 			}
 			// For now, we'll just return an EOF token for any unrecognized character.
-			return Token{Type: TokenEOF, Value: "", Pos: tokenPos}
+			return Token{Type: TokenError, Value: string(ch), Pos: tokenPos}
 		}
 	}
 	return Token{Type: TokenEOF, Value: "", Pos: t.pos}
