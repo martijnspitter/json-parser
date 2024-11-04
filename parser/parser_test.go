@@ -38,6 +38,18 @@ func TestParser(t *testing.T) {
 			input:    `{"key": true, "key2": False, "key3": null, "key4": 123}`,
 			expected: fmt.Errorf("unexpected token: F at position: 22"),
 		},
+		{
+			input:    `{"key": "value", "key-n": 101, "key-0": {}, "key-l": []}`,
+			expected: nil,
+		},
+		{
+			input:    `{"key": "value", "key-n": 101, "key-o": { "inner key": "inner value"}, "key-l": ["list value"]}`,
+			expected: nil,
+		},
+		{
+			input:    `{"key": "value", "key-n": 101, "key-o": { "inner key": "inner value"}, "key-l": ['list value']}`,
+			expected: fmt.Errorf("unexpected token: ' at position: 81"),
+		},
 	}
 
 	for _, test := range tests {
