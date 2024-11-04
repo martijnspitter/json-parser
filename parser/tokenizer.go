@@ -18,6 +18,9 @@ const (
 	TokenString       = "TokenString"
 	TokenColon        = "TokenColon"
 	TokenComma        = "TokenComma"
+	TokenNumber       = "TokenNumber"
+	TokenBool         = "TokenBool"
+	TokenNull         = "TokenNull"
 )
 
 type Token struct {
@@ -76,6 +79,31 @@ func (t *Tokenizer) NextToken() Token {
 				return Token{Type: TokenString, Value: value, Pos: tokenPos}
 			}
 			return Token{Type: TokenEOF, Value: ""}
+		case 't', 'f':
+			start := t.pos - 1
+			for t.pos < len(t.input) && unicode.IsLetter(rune(t.input[t.pos])) {
+				t.pos++
+			}
+			value := t.input[start:t.pos]
+			if value == "true" || value == "false" {
+				return Token{Type: TokenBool, Value: value, Pos: tokenPos}
+			}
+		case 'n':
+			start := t.pos - 1
+			for t.pos < len(t.input) && unicode.IsLetter(rune(t.input[t.pos])) {
+				t.pos++
+			}
+			value := t.input[start:t.pos]
+			if value == "null" {
+				return Token{Type: TokenNull, Value: value, Pos: tokenPos}
+			}
+		case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			start := t.pos - 1
+			for t.pos < len(t.input) && unicode.IsDigit(rune(t.input[t.pos])) {
+				t.pos++
+			}
+			value := t.input[start:t.pos]
+			return Token{Type: TokenNumber, Value: value, Pos: tokenPos}
 		default:
 			if unicode.IsSpace(rune(ch)) {
 				continue

@@ -102,7 +102,7 @@ func (p *Parser) parseValue(token Token) error {
 	case TokenComma:
 		// Expecting a key after a value
 		p.expectingVal = true
-	case TokenString:
+	case TokenString, TokenNumber, TokenBool, TokenNull:
 		// Handle string value
 		// Check if the Current Node has Children and the Last Child is an Object
 		if len(p.currentNode.Children) > 0 && p.currentNode.Children[len(p.currentNode.Children)-1].Type == NodeObject {
