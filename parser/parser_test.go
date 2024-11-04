@@ -21,14 +21,12 @@ func TestParser(t *testing.T) {
 			input: `{"key": "value"}`,
 			expected: Node{
 				Type: NodeObject,
-				Key:  "",
+				Key:  "key",
 				Children: []Node{
 					{
-						Type: NodeString,
-						Key:  "key",
-						Children: []Node{
-							{Type: NodeString, Key: "", Children: nil},
-						},
+						Type:     NodeString,
+						Key:      "",
+						Children: nil,
 					},
 				},
 			},
