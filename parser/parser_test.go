@@ -1,63 +1,51 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestParser(t *testing.T) {
 	tests := []struct {
 		input    string
-		expected Node
+		expected error
 	}{
 		{
-			input: "{}",
-			expected: Node{
-				Type:     NodeObject,
-				Key:      "",
-				Children: []Node{},
-			},
+			input:    "{}",
+			expected: nil,
 		},
 		{
-			input: `{"key": "value"}`,
-			expected: Node{
-				Type: NodeObject,
-				Key:  "key",
-				Children: []Node{
-					{
-						Type:     NodeString,
-						Key:      "",
-						Children: nil,
-					},
-				},
-			},
+			input:    `{"key": "value"}`,
+			expected: nil,
+		},
+		{
+			input:    `{"key": "value",}`,
+			expected: fmt.Errorf("unexpected end of input"),
+		},
+		{
+			input:    `{"key": "value", "key2": "value2"}`,
+			expected: nil,
+		},
+		{
+			input:    `{"key": "value", key2: "value2"}`,
+			expected: fmt.Errorf("unexpected end of input"),
 		},
 	}
 
 	for _, test := range tests {
 		tokenizer := NewTokenizer(test.input)
 		parser := NewParser(tokenizer)
-		result, err := parser.Parse()
+		err := parser.Parse()
 
-		if err != nil {
+		if err != nil && test.expected == nil {
 			t.Errorf("Test failed for input '%s'. Unexpected error: %v", test.input, err)
 		}
-
-		if !compareNodes(result, test.expected) {
-			t.Errorf("Test failed for input '%s'. Expected %v, got %v", test.input, test.expected, result)
+		if err == nil && test.expected != nil {
+			t.Errorf("Test failed for input '%s'. Expected error: %v", test.input, test.expected)
 		}
-	}
-}
-
-func compareNodes(a, b Node) bool {
-	if a.Type != b.Type || a.Key != b.Key || len(a.Children) != len(b.Children) {
-		return false
-	}
-
-	for i := range a.Children {
-		if !compareNodes(a.Children[i], b.Children[i]) {
-			return false
+		if err != nil && test.expected != nil && err.Error() != test.expected.Error() {
+			t.Errorf("Test failed for input '%s'. Expected error: %v, got: %v", test.input, test.expected, err)
 		}
-	}
 
-	return true
+	}
 }

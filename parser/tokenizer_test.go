@@ -33,6 +33,29 @@ func TestTokenizer(t *testing.T) {
 				{Type: TokenEOF},
 			},
 		},
+		{
+			input: "{ \"key\": \"value\" }",
+			expected: []Token{
+				{Type: TokenLeftBrace, Value: "{"},
+				{Type: TokenString, Value: "key"},
+				{Type: TokenColon, Value: ":"},
+				{Type: TokenString, Value: "value"},
+				{Type: TokenRightBrace, Value: "}"},
+				{Type: TokenEOF},
+			},
+		},
+		{
+			input: "{ \"key\": \"value\", }",
+			expected: []Token{
+				{Type: TokenLeftBrace, Value: "{"},
+				{Type: TokenString, Value: "key"},
+				{Type: TokenColon, Value: ":"},
+				{Type: TokenString, Value: "value"},
+				{Type: TokenComma, Value: ","},
+				{Type: TokenRightBrace, Value: "}"},
+				{Type: TokenEOF},
+			},
+		},
 	}
 
 	for _, test := range tests {

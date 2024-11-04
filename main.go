@@ -24,7 +24,7 @@ func main() {
 	tokenizer := parser.NewTokenizer(content)
 	parser := parser.NewParser(tokenizer)
 
-	_, err = parser.Parse()
+	err = parser.Parse()
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
