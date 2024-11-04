@@ -51,7 +51,7 @@ func (p *Parser) parseValue() (Node, error) {
 	case TokenString:
 		return Node{Type: NodeString}, nil
 	case TokenEOF:
-		return Node{}, fmt.Errorf("unexpected end of input")
+		return Node{}, fmt.Errorf("Not a valid JSON input")
 	default:
 		return Node{}, fmt.Errorf("unexpected token: %v", p.currentToken)
 	}

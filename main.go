@@ -24,11 +24,11 @@ func main() {
 	tokenizer := parser.NewTokenizer(content)
 	parser := parser.NewParser(tokenizer)
 
-	result, err := parser.Parse()
+	_, err = parser.Parse()
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
-		fmt.Printf("Parsed JSON: %v\n", result)
+		fmt.Println("Parsed Valid JSON")
 	}
 
 }

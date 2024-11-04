@@ -31,9 +31,6 @@ func (r *reader) getFile() error {
 	if err != nil {
 		return err
 	}
-	if stat.Size() == 0 {
-		return errors.New("file is empty")
-	}
 	if stat.IsDir() {
 		return errors.New("file is a directory")
 	}
